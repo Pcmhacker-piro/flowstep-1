@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
-import logoAsset from "@/assets/logo.png.asset.json";
+import logoAsset from "@/assets/logo.png";
 
 const NEXT_STORAGE_KEY = "flowstep:oauth_next";
 
@@ -35,7 +35,7 @@ const schema = z.object({
 function Logo() {
   return (
     <div className="flex items-center gap-2">
-      <img src={logoAsset.url} alt="Flowstep" className="h-7 w-7 rounded-lg" />
+      <img src={logoAsset} alt="Flowstep" className="h-7 w-7 rounded-lg" />
       <span className="text-lg font-semibold tracking-tight text-[#0b1220]">flowstep</span>
     </div>
   );

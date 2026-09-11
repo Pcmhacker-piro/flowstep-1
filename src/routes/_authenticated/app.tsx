@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import logoAsset from "@/assets/logo.png.asset.json";
+import logoAsset from "@/assets/logo.png";
 import { useEffect, useRef, useState, useCallback, type PointerEvent as ReactPointerEvent } from "react";
 import { DESIGN_MODELS, DEFAULT_DESIGN_MODEL, type DesignModelId } from "@/lib/designModels";
 import { flushSync } from "react-dom";
@@ -1092,7 +1092,7 @@ function AppHome() {
       <header className="flex items-center justify-between border-b border-black/5 bg-white px-4 py-2.5">
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2" aria-label="Go to home">
-            <img src={logoAsset.url} alt="Flowstep" className="h-7 w-7 rounded-lg" />
+            <img src={logoAsset} alt="Flowstep" className="h-7 w-7 rounded-lg" />
             <span className="text-base font-semibold tracking-tight text-[#0b1220]">flowstep</span>
           </Link>
           <input

@@ -28,8 +28,8 @@ import emily from "@/assets/flowstep/Emily-mFsmGr5r.jpg";
 import anna from "@/assets/flowstep/Anna-D40Ud1mf.jpg";
 import alex from "@/assets/flowstep/Alex-SlO2GsJn.jpg";
 import priya from "@/assets/flowstep/Priya-Ph5tG65j.jpg";
-import enterKeyPoster from "@/assets/enter-key-hacker.jpeg.asset.json";
-import logoAsset from "@/assets/logo.png.asset.json";
+import enterKeyPoster from "@/assets/enter-key-hacker.jpeg";
+import logoAsset from "@/assets/logo.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -57,7 +57,7 @@ function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2">
       <img
-        src={logoAsset.url}
+        src={logoAsset}
         alt="Flowstep logo"
         className="h-8 w-8 rounded-lg object-cover"
       />
@@ -372,7 +372,7 @@ function CinematicReveal() {
           >
             {/* the animated keycap product shot */}
             <img
-              src={enterKeyPoster.url}
+              src={enterKeyPoster}
               alt="Macro shot of a backlit Enter key in a dark workshop"
               className="absolute inset-0 h-full w-full object-cover"
               style={{
