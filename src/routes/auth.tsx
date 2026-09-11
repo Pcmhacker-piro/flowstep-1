@@ -52,6 +52,7 @@ function AuthPage() {
   const [updates, setUpdates] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [googleAvailable, setGoogleAvailable] = useState(true);
 
   function goNext() {
     if (nextPath) {
@@ -86,16 +87,24 @@ function AuthPage() {
     if (nextPath && typeof window !== "undefined") {
       sessionStorage.setItem(NEXT_STORAGE_KEY, nextPath);
     }
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (result.error) {
-      setError(result.error.message ?? "Google sign-in failed");
-      return;
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) throw new Error(result.error.message ?? "Google sign-in failed");
+      if (result.redirected) return;
+      goNext();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Google sign-in failed";
+      if (/not supported|not enabled|provider/i.test(message)) {
+        setGoogleAvailable(false);
+        setError("Google sign-in isn't available yet. Please use your email and password.");
+        return;
+      }
+      setError(message);
     }
-    if (result.redirected) return;
-    goNext();
   }
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
