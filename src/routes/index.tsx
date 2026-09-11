@@ -163,7 +163,7 @@ function Nav() {
 function Hero() {
   const navigate = useNavigate();
   const signedIn = useSignedIn();
-  const go = () => navigate({ to: signedIn ? "/app" : "/auth" });
+  const go = () => navigate({ to: "/app" });
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-[#f0e8ff] via-[#f4ecff] to-[#f8f2ff]">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 pt-16 pb-24 lg:grid-cols-2 lg:pt-24">
@@ -758,7 +758,7 @@ function FAQ() {
 function FinalCTA() {
   const navigate = useNavigate();
   const signedIn = useSignedIn();
-  const go = () => navigate({ to: signedIn ? "/app" : "/auth" });
+  const go = () => navigate({ to: "/app" });
   return (
     <section id="pricing" className="relative overflow-hidden bg-gradient-to-b from-[#f8f2ff] to-[#e9dcff] py-24">
       <div className="mx-auto max-w-3xl px-6 text-center">
