@@ -42,7 +42,7 @@ import { exportDesignZip } from "@/lib/exportDesign";
 
 
 
-export const Route = createFileRoute("/_authenticated/app")({
+export const Route = createFileRoute("/app")({
   head: () => ({
     meta: [
       { title: "AI Design Canvas — Flowstep" },
