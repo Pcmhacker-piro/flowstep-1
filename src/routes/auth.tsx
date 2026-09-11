@@ -172,19 +172,25 @@ function AuthPage() {
           </button>
         </p>
 
-        <button
-          onClick={handleGoogle}
-          className="mt-8 flex w-full items-center justify-center gap-3 rounded-lg bg-[#f4f4f5] px-4 py-3 text-sm font-medium text-[#0b1220] hover:bg-[#eaeaec]"
-        >
-          <GoogleIcon />
-          Continue with Google
-        </button>
+        {googleAvailable && (
+          <>
+            <button
+              onClick={handleGoogle}
+              className="mt-8 flex w-full items-center justify-center gap-3 rounded-lg bg-[#f4f4f5] px-4 py-3 text-sm font-medium text-[#0b1220] hover:bg-[#eaeaec]"
+            >
+              <GoogleIcon />
+              Continue with Google
+            </button>
 
-        <div className="my-6 flex items-center gap-3 text-xs text-[#0b1220]/40">
-          <div className="h-px flex-1 bg-black/10" />
-          <span>or</span>
-          <div className="h-px flex-1 bg-black/10" />
-        </div>
+            <div className="my-6 flex items-center gap-3 text-xs text-[#0b1220]/40">
+              <div className="h-px flex-1 bg-black/10" />
+              <span>or</span>
+              <div className="h-px flex-1 bg-black/10" />
+            </div>
+          </>
+        )}
+        {!googleAvailable && <div className="mt-8" />}
+
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
