@@ -52,6 +52,7 @@ function AuthPage() {
   const [updates, setUpdates] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [googleAvailable, setGoogleAvailable] = useState(true);
 
   function goNext() {
     if (nextPath) {
@@ -86,16 +87,24 @@ function AuthPage() {
     if (nextPath && typeof window !== "undefined") {
       sessionStorage.setItem(NEXT_STORAGE_KEY, nextPath);
     }
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (result.error) {
-      setError(result.error.message ?? "Google sign-in failed");
-      return;
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) throw new Error(result.error.message ?? "Google sign-in failed");
+      if (result.redirected) return;
+      goNext();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Google sign-in failed";
+      if (/not supported|not enabled|provider/i.test(message)) {
+        setGoogleAvailable(false);
+        setError("Google sign-in isn't available yet. Please use your email and password.");
+        return;
+      }
+      setError(message);
     }
-    if (result.redirected) return;
-    goNext();
   }
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -163,19 +172,25 @@ function AuthPage() {
           </button>
         </p>
 
-        <button
-          onClick={handleGoogle}
-          className="mt-8 flex w-full items-center justify-center gap-3 rounded-lg bg-[#f4f4f5] px-4 py-3 text-sm font-medium text-[#0b1220] hover:bg-[#eaeaec]"
-        >
-          <GoogleIcon />
-          Continue with Google
-        </button>
+        {googleAvailable && (
+          <>
+            <button
+              onClick={handleGoogle}
+              className="mt-8 flex w-full items-center justify-center gap-3 rounded-lg bg-[#f4f4f5] px-4 py-3 text-sm font-medium text-[#0b1220] hover:bg-[#eaeaec]"
+            >
+              <GoogleIcon />
+              Continue with Google
+            </button>
 
-        <div className="my-6 flex items-center gap-3 text-xs text-[#0b1220]/40">
-          <div className="h-px flex-1 bg-black/10" />
-          <span>or</span>
-          <div className="h-px flex-1 bg-black/10" />
-        </div>
+            <div className="my-6 flex items-center gap-3 text-xs text-[#0b1220]/40">
+              <div className="h-px flex-1 bg-black/10" />
+              <span>or</span>
+              <div className="h-px flex-1 bg-black/10" />
+            </div>
+          </>
+        )}
+        {!googleAvailable && <div className="mt-8" />}
+
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
