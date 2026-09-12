@@ -1326,7 +1326,7 @@ function AppHome() {
                 rows={3}
                 className="w-full resize-none bg-transparent px-1 py-1 text-[15px] leading-relaxed text-[#0b1220] outline-none placeholder:text-[#0b1220]/40"
               />
-              <div className="mt-2 flex flex-wrap items-center gap-1">
+              <div className="mt-2 grid grid-cols-[auto_auto_minmax(0,1fr)_auto_auto] items-center gap-1">
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
@@ -1366,18 +1366,17 @@ function AppHome() {
                 >
                   <MousePointerClick className="h-4 w-4" />
                 </button>
-                <div className="ml-auto flex shrink-0 flex-wrap items-center justify-end gap-1">
-                  <div className="relative mr-1 shrink-0">
+                <div className="relative col-span-full row-start-2 mt-1 min-w-0">
                     <button
                       type="button"
                       onClick={() => setModelPickerOpen((v) => !v)}
-                      className="flex h-7 shrink-0 items-center gap-1 rounded-full border border-black/10 bg-white px-2.5 text-[11px] font-medium text-[#0b1220] hover:bg-black/[0.03]"
+                      className="flex h-8 w-full min-w-0 items-center gap-1.5 rounded-full border border-black/10 bg-white px-2.5 text-[11px] font-medium text-[#0b1220] hover:bg-black/[0.03]"
                       title="Model — pick which AI generates the design"
                       aria-haspopup="listbox"
                       aria-expanded={modelPickerOpen}
                     >
                       <span className="h-1.5 w-1.5 rounded-full bg-[#2b6bff]" />
-                      <span className="max-w-[120px] truncate">
+                      <span className="min-w-0 flex-1 truncate text-left">
                         {DESIGN_MODELS.find((m) => m.id === model)?.label ?? "Model"}
                       </span>
                       <svg viewBox="0 0 20 20" className="h-3 w-3 opacity-60" fill="none" stroke="currentColor" strokeWidth="2">
@@ -1450,10 +1449,42 @@ function AppHome() {
 
                       </>
                     ) : null}
-                  </div>
+                </div>
 
-                  <div
-                    className="mr-1 flex shrink-0 items-center rounded-full border border-black/10 bg-white p-0.5"
+                <button
+                  type="button"
+                  className="col-start-4 row-start-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[#0b1220]/60 hover:bg-black/5 hover:text-[#0b1220]"
+                  aria-label="Voice input"
+                  title="Voice input"
+                >
+                  <Mic className="h-4 w-4" />
+                </button>
+                {loading ? (
+                  <button
+                    onClick={stopGeneration}
+                    className="col-start-5 row-start-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#0b1220] text-white hover:bg-black"
+                    aria-label="Stop generating"
+                  >
+                    <Square className="h-3.5 w-3.5 fill-white" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      const p = prompt.trim();
+                      if (!p) return;
+                      if (editTargets.length > 0) handleEditPart(p, editTargets);
+                      else handleSend();
+                    }}
+                    disabled={!prompt.trim()}
+                    className="col-start-5 row-start-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#0b1220] text-white transition-opacity hover:bg-black disabled:cursor-not-allowed disabled:bg-[#0b1220]/10 disabled:text-[#0b1220]/40"
+                    aria-label={editTargets.length > 0 ? "Apply edit" : "Send prompt"}
+                  >
+                    <ArrowUp className="h-4 w-4" />
+                  </button>
+                )}
+
+                <div
+                    className="col-span-full row-start-3 mt-1 grid min-w-0 grid-cols-[0.7fr_0.7fr_1.3fr_1.3fr] rounded-full border border-black/10 bg-white p-0.5"
                     role="radiogroup"
                     aria-label="Generation level"
                     title="Generation level — controls how polished the output is"
@@ -1473,7 +1504,7 @@ function AppHome() {
                         aria-checked={level === opt.id}
                         onClick={() => setLevel(opt.id)}
                         title={opt.hint}
-                        className={`rounded-full px-2 py-0.5 text-[11px] font-medium transition-colors ${
+                        className={`min-w-0 truncate rounded-full px-1.5 py-1 text-[11px] font-medium transition-colors ${
                           level === opt.id
                             ? "bg-[#0b1220] text-white"
                             : "text-[#0b1220]/60 hover:text-[#0b1220]"
@@ -1482,39 +1513,6 @@ function AppHome() {
                         {opt.label}
                       </button>
                     ))}
-                  </div>
-
-                  <button
-                    type="button"
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[#0b1220]/60 hover:bg-black/5 hover:text-[#0b1220]"
-                    aria-label="Voice input"
-                    title="Voice input"
-                  >
-                    <Mic className="h-4 w-4" />
-                  </button>
-                  {loading ? (
-                    <button
-                      onClick={stopGeneration}
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#0b1220] text-white hover:bg-black"
-                      aria-label="Stop generating"
-                    >
-                      <Square className="h-3.5 w-3.5 fill-white" />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        const p = prompt.trim();
-                        if (!p) return;
-                        if (editTargets.length > 0) handleEditPart(p, editTargets);
-                        else handleSend();
-                      }}
-                      disabled={!prompt.trim()}
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#0b1220] text-white transition-opacity hover:bg-black disabled:cursor-not-allowed disabled:bg-[#0b1220]/10 disabled:text-[#0b1220]/40"
-                      aria-label={editTargets.length > 0 ? "Apply edit" : "Send prompt"}
-                    >
-                      <ArrowUp className="h-4 w-4" />
-                    </button>
-                  )}
                 </div>
               </div>
             </div>
