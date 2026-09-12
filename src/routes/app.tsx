@@ -1484,7 +1484,7 @@ function AppHome() {
                 )}
 
                 <div
-                    className="col-span-full row-start-3 mt-1 grid min-w-0 grid-cols-4 rounded-full border border-black/10 bg-white p-0.5"
+                    className="col-span-full row-start-3 mt-1 grid min-w-0 grid-cols-[0.7fr_0.7fr_1.3fr_1.3fr] rounded-full border border-black/10 bg-white p-0.5"
                     role="radiogroup"
                     aria-label="Generation level"
                     title="Generation level — controls how polished the output is"
